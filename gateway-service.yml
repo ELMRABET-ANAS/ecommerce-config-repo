@@ -22,7 +22,7 @@ spring:
           predicates:
             - Path=/product-h2-console/**
           filters:
-            - StripPrefix=1  # Enlève /product-h2-console pour avoir /h2-console
+            - RewritePath=/product-h2-console(?<segment>/?.*), /h2-console$\{segment}
 
 eureka:
   client:
