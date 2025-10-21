@@ -16,6 +16,14 @@ spring:
           predicates:
             - Path=/products/**
 
+        # Route pour accéder à la console H2 du product-service
+        - id: product-service-h2-console
+          uri: lb://PRODUCT-SERVICE
+          predicates:
+            - Path=/product-h2-console/**
+          filters:
+            - StripPrefix=1  # Enlève /product-h2-console pour avoir /h2-console
+
 eureka:
   client:
     service-url:
