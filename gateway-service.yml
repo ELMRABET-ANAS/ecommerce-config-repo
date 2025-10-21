@@ -20,9 +20,11 @@ spring:
         - id: product-service-h2-console
           uri: lb://PRODUCT-SERVICE
           predicates:
-            - Path=/product-h2-console/**
+              - Path=/product-service/h2-console/**
           filters:
-            - RewritePath=/product-h2-console(?<segment>/?.*), /h2-console$\{segment}
+              # This filter is necessary to strip the prefix
+              - RewritePath=/product-service/(?<remaining>.*), /${remaining}
+
 
 eureka:
   client:
@@ -31,8 +33,12 @@ eureka:
   instance:
     prefer-ip-address: true
 
+
 management:
   endpoints:
     web:
       exposure:
-        include: "*"  # Expose tous les endpoints actuator
+        include: "*"  # expose routes, health, metrics
+  endpoint:
+    gateway:
+      enabled: true  # Active explicitement l'endpoint gateway
