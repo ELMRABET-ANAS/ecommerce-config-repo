@@ -31,12 +31,8 @@ eureka:
   instance:
     prefer-ip-address: true
 
-
 management:
   endpoints:
     web:
       exposure:
-        include: "*"  # expose routes, health, metrics
-  endpoint:
-    gateway:
-      enabled: true  # Active explicitement l'endpoint gateway
+        include: "*"  # Expose tous les endpoints actuator
