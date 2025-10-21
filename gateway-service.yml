@@ -6,10 +6,14 @@ spring:
     name: gateway-service
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
+      # Nouvelles clés (selon warning de migration):
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
+
       routes:
         - id: product-service
           uri: lb://PRODUCT-SERVICE
@@ -20,11 +24,10 @@ spring:
         - id: product-service-h2-console
           uri: lb://PRODUCT-SERVICE
           predicates:
-              - Path=/product-service/h2-console/**
+            - Path=/product-service/h2-console/**
           filters:
-              # This filter is necessary to strip the prefix
-              - RewritePath=/product-service/(?<remaining>.*), /${remaining}
-
+            # Réécrit le chemin pour enlever /product-service
+            - RewritePath=/product-service/(?<remaining>.*), /${remaining}
 
 eureka:
   client:
@@ -33,12 +36,8 @@ eureka:
   instance:
     prefer-ip-address: true
 
-
 management:
   endpoints:
     web:
       exposure:
-        include: "*"  # expose routes, health, metrics
-  endpoint:
-    gateway:
-      enabled: true  # Active explicitement l'endpoint gateway
+        include: "*"  # Expose tous les endpoints actuator (health, metrics, gateway/routes)
