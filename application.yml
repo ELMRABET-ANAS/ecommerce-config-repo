@@ -1,0 +1,36 @@
+# ecommerce-config-repo/application.yml
+# Configuration commune partagée par tous les services
+# Les services peuvent écraser ces propriétés dans leurs fichiers spécifiques (ex: auth-service.yml)
+
+spring:
+  # Configuration commune RabbitMQ
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    listener:
+      simple:
+        concurrency: 1
+        max-concurrency: 5
+
+  # Configuration commune Redis (utilisée si les services activent le cache Redis)
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  cache:
+    type: redis
+
+# Configuration commune Eureka (Service Discovery)
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+# Niveau de logs par défaut
+logging:
+  level:
+    root: INFO
